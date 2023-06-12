@@ -1,0 +1,17 @@
+build
+__pycache__
+coverage.xml
+data
+debian
+deb_dist
+dist
+*.egg-info
+*.pyc
+*.swp
+*.swo
+*.tar.gz
+.coverage
+.ipynb_checkpoints/
+.pytest_cache
+.tox
+*.svg
