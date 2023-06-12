@@ -16,7 +16,7 @@ class RegexpAst:
     Do not use binary AST otherwise the priority queue will explode!
     Note that calling simplify transforms an arbitrary AST to a n-ary AST.
     """
-    ROOT = "root" # TODO ROOT = "&perp;"
+    ROOT = "root"  # TODO ROOT = "&perp;"
 
     def __init__(self):
         """
@@ -844,9 +844,9 @@ class RegexpAst:
         # print("4______end")
         return leaf_to_end_on in self.walk_word(prefix)
 
-    #--------------------------------------------------------------------------
+    # --------------------------------------------------------------------------
     # The following methods are reuired to use pybgl.graphviz
-    #--------------------------------------------------------------------------
+    # --------------------------------------------------------------------------
 
     def edges(self) -> iter:
         """
@@ -911,9 +911,6 @@ class RegexpAst:
             The corresponding Graphviz string.
         """
         self.directed = True
-        max_arity = max(
-            len(children) for children in self.map_node_children.values()
-        )
         dg = {"rankdir": "TB"}
         dpv = {
             "label": make_func_property_map(
@@ -929,6 +926,7 @@ class RegexpAst:
         kwargs = enrich_kwargs(dpv, "dpv", **kwargs)
         kwargs = enrich_kwargs(dv, "dv", **kwargs)
         return to_dot(self, **kwargs)
+
 
 def prefix_regexp_to_ast(prefix_regexp: list) -> RegexpAst:
     """

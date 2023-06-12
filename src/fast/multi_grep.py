@@ -2,7 +2,7 @@
 # -*- coding: utf-8 -*-
 
 from collections import defaultdict
-from pybgl.automaton import Automaton, BOTTOM
+from pybgl.automaton import BOTTOM
 
 
 def multi_grep(
@@ -52,13 +52,14 @@ def multi_grep(
         map_name_q_js = map_name_q_js_next
         map_name_q_js_next = make_map_name_q_js_next()
 
+
 def multi_grep_with_delimiters(
     w: str,
     map_name_dfa: dict,
     callback: callable = lambda i, j, k, w: None,
     is_pattern_separator: callable = lambda name: False,
     is_pattern_left_separated: callable = lambda name: True,
-    is_pattern_right_separate: callable = lambda name: True
+    is_pattern_right_separated: callable = lambda name: True
 ):
     """
     Searches sub-strings of a string matched by multiple patterns, possibly
@@ -114,7 +115,7 @@ def multi_grep_with_delimiters(
     multi_grep(
         w,
         map_name_dfa,
-        callback = lambda name, j, k, w: filtered_callback(name, j, k, w)
+        callback=lambda name, j, k, w: filtered_callback(name, j, k, w)
     )
 
 
@@ -154,8 +155,10 @@ class MultiGrepFonctorAll(MultiGrepFonctor):
     """
     def __init__(self):
         self.map_i_jk = defaultdict(list)
+
     def __call__(self, i, j, k, w):
         self.map_i_jk[i].append((j, k))
+
     def indices(self) -> dict:
         return self.map_i_jk
 

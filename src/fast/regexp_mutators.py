@@ -3,12 +3,12 @@
 
 from itertools import chain, combinations
 from typing import List, Tuple
-from pybgl.ipynb import ipynb_display_graph
 from .pattern_automaton import PatternAutomaton
 from .regexp_ast import RegexpAst
 
 # TODO remove mutators_to_bounce_on from each constructor
 # TODO transform each class to a function
+
 
 class Mutator:
     def __init__(self, mutators_to_bounce_on):
@@ -120,6 +120,7 @@ class ActivateMutator(Mutator):
             return []
         else:
             return [(ast, v)]
+
 
 # Left
 class DownDotMutator(Mutator):

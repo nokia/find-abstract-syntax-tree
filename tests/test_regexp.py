@@ -1,7 +1,26 @@
 #!/usr/bin/env pytest
 # -*- coding: utf-8 -*-
 
-from fast.regexp import *
+from pybgl.regexp import compile_dfa
+from fast.regexp import (
+    make_dfa_any,
+    RE_0_128,
+    RE_0_255,
+    RE_0_32,
+    RE_ALNUM,
+    RE_DELIMITER,
+    RE_FLOAT,
+    RE_HEXA,
+    RE_INT,
+    RE_IPV4,
+    RE_IPV6,
+    RE_NET_IPV4,
+    RE_NET_IPV6,
+    RE_PATH,
+    RE_SPACES,
+    RE_UINT,
+    RE_WORD,
+)
 
 
 def test_make_dfa_any():
@@ -11,11 +30,12 @@ def test_make_dfa_any():
     assert not g.accepts("abc\t123")
     assert g.accepts("#!~@")
 
+
 def test_re_0_n():
     map_max_re = {
-        32 : RE_0_32,
-        128 : RE_0_128,
-        255 : RE_0_255,
+        32: RE_0_32,
+        128: RE_0_128,
+        255: RE_0_255,
     }
     for (n, regexp) in map_max_re.items():
         g = compile_dfa(regexp)
@@ -23,6 +43,7 @@ def test_re_0_n():
             assert g.accepts(str(i))
         assert not g.accepts("-1")
         assert not g.accepts(str(n+1))
+
 
 def test_re_alnum():
     g = compile_dfa(RE_ALNUM)
@@ -32,10 +53,12 @@ def test_re_alnum():
     assert g.accepts("abc")
     assert g.accepts("x0y1z")
 
+
 def test_re_delimiters():
     g = compile_dfa(RE_DELIMITER)
     assert g.accepts("---")
     assert g.accepts("======")
+
 
 def test_re_hexa():
     g = compile_dfa(RE_HEXA)
@@ -46,6 +69,7 @@ def test_re_hexa():
     assert g.accepts("aa1234ff")
     assert not g.accepts("aa1234ffx")
 
+
 def test_re_float():
     g = compile_dfa(RE_FLOAT)
     assert g.accepts("1")
@@ -55,6 +79,7 @@ def test_re_float():
     assert not g.accepts(".34")
     assert not g.accepts("12.")
 
+
 def test_re_int():
     g = compile_dfa(RE_INT)
     assert g.accepts("0")
@@ -62,6 +87,7 @@ def test_re_int():
     assert g.accepts("-123")
     assert g.accepts("+123")
     assert not g.accepts("123.4")
+
 
 def test_re_ipv4():
     g = compile_dfa(RE_IPV4)
@@ -73,6 +99,7 @@ def test_re_ipv4():
     assert not g.accepts("0.256.0.0")
     assert not g.accepts("0.0.256.0")
     assert not g.accepts("0.0.0.256")
+
 
 def test_re_ipv6():
     g = compile_dfa(RE_IPV6)
@@ -87,6 +114,7 @@ def test_re_ipv6():
     assert not g.accepts("1")
     assert not g.accepts(":1")
 
+
 def test_re_net_ipv4():
     g = compile_dfa(RE_NET_IPV4)
     assert g.accepts("0.0.0.0") is False
@@ -95,6 +123,7 @@ def test_re_net_ipv4():
     assert g.accepts("192.168.1.183/32") is True
     assert g.accepts("192.168.1.256/32") is False
     assert g.accepts("192.168.1.183/33") is False
+
 
 def test_re_net_ipv6():
     g = compile_dfa(RE_NET_IPV6)
@@ -106,11 +135,13 @@ def test_re_net_ipv6():
     assert g.accepts("2x02:a802:23::1/128") is False
     assert g.accepts("2a02:a802:23::1/129") is False
 
+
 def test_re_path():
     g = compile_dfa(RE_PATH)
     assert not g.accepts("aaa/bbb")
     assert g.accepts("/aaa/bbb")
     assert g.accepts("/my_folder0/my-subdir1")
+
 
 def test_re_spaces():
     g = compile_dfa(RE_SPACES)
@@ -118,11 +149,13 @@ def test_re_spaces():
     assert g.accepts("  \t  ")
     assert not g.accepts(" x \t y ")
 
+
 def test_re_word():
     g = compile_dfa(RE_WORD)
     assert g.accepts("abc")
     assert not g.accepts("abc de")
     assert g.accepts("12")
+
 
 def test_re_uint():
     g = compile_dfa(RE_UINT)

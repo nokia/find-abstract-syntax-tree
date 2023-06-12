@@ -175,7 +175,7 @@ class FindAstFromStringsVerboseVisitor(FindAstFromStringsDefaultVisitor):
                 )
             )
 
-    def visit_push_item(self, mutator: Mutator, new_depth :int, new_pq_item):
+    def visit_push_item(self, mutator: Mutator, new_depth: int, new_pq_item):
         """
         Triggered when a positive example is totally processed.
         """

@@ -4,8 +4,8 @@
 from fast.regexp import make_map_name_dfa
 from fast.pattern_automaton import PatternAutomaton
 
-NAMES = ["float", "int", "ipv4", "spaces", "uint"]
-MAP_NAME_DFA = make_map_name_dfa(NAMES)
+MAP_NAME_DFA = make_map_name_dfa(["float", "int", "ipv4", "spaces", "uint"])
+
 
 def test_pattern_automaton():
     w = "11.22.33.44 55.66 789"
@@ -16,12 +16,14 @@ def test_pattern_automaton():
     assert g.num_vertices() == 14
     assert g.num_edges() == 26
 
+
 def test_pattern_automaton_empty_word():
     w = ""
     g = PatternAutomaton(w, MAP_NAME_DFA)
     assert g.num_vertices() == 1
     assert g.num_edges() == 0
     assert g.is_final(0)
+
 
 def test_pattern_automaton_equals():
     g1 = PatternAutomaton("11.22.33.44 55.66 789", MAP_NAME_DFA)
@@ -73,35 +75,35 @@ def test_pattern_automaton_get_slice():
     assert slices == expected
     infixes = [g.get_infix(e) for e in sorted(g.edges())]
     expected = [
-        "10",      # float
-        "10",      # int
-        "10",      # uint
-        "   ",     # spaces
-        "abc",     # any
-        "  ",      # spaces
-        "1",       # int
-        "1",       # uint
-        "1.2",     # float
-        "1.2.3.4", # ipv4
-        ".",       # any
-        "2",       # int
-        "2",       # uint
-        "2.3",     # float
-        ".",       # any
-        "3",       # int
-        "3",       # uint
-        "3.4",     # float
-        ".",       # any
-        "4",       # int
-        "4",       # uint
-        "  ",      # spaces
-        "de",      # any
-        " ",       # spaces
-        "56",      # int
-        "56",      # uint
-        "56.78",   # float
-        ".",       # any
-        "78",      # int
-        "78",      # uint
+        "10",       # float
+        "10",       # int
+        "10",       # uint
+        "   ",      # spaces
+        "abc",      # any
+        "  ",       # spaces
+        "1",        # int
+        "1",        # uint
+        "1.2",      # float
+        "1.2.3.4",  # ipv4
+        ".",        # any
+        "2",        # int
+        "2",        # uint
+        "2.3",      # float
+        ".",        # any
+        "3",        # int
+        "3",        # uint
+        "3.4",      # float
+        ".",        # any
+        "4",        # int
+        "4",        # uint
+        "  ",       # spaces
+        "de",       # any
+        " ",        # spaces
+        "56",       # int
+        "56",       # uint
+        "56.78",    # float
+        ".",        # any
+        "78",       # int
+        "78",       # uint
     ]
     assert infixes == expected

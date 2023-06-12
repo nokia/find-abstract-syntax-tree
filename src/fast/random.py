@@ -2,7 +2,7 @@
 # -*- coding: utf-8 -*-
 
 from functools import partial
-from random import randrange, random, choices, choice
+from random import choice, randrange, random
 from pybgl.automaton import Automaton, EdgeDescriptor
 from pybgl.shunting_yard_postfix import Ast, MAP_OPERATORS_RE
 
@@ -93,50 +93,50 @@ def random_word_from_automaton(
     return reject_sampling(partial(sample, g=g, p=p), repeat, max_sampling)
 
 
-#def random_words_from_automata(
-#    dfas: list,
-#    num_words: int = 30,
-#    max_length: float = float("inf"),
-#    distribution_dfa: list = None,
-#    p: float = 0.5,
-#    repeat: bool = True,
-#    max_sampling: int = 1000
-#) -> list:
-#    """
-#    Concatenates `num_words` random words.
-#    Each words is randomly drawn by performing a random (uniform) walk
-#    on an input automaton picked at random (uniform).
+# def random_words_from_automata(
+#     dfas: list,
+#     num_words: int = 30,
+#     max_length: float = float("inf"),
+#     distribution_dfa: list = None,
+#     p: float = 0.5,
+#     repeat: bool = True,
+#     max_sampling: int = 1000
+# ) -> list:
+#     """
+#     Concatenates `num_words` random words.
+#     Each words is randomly drawn by performing a random (uniform) walk
+#     on an input automaton picked at random (uniform).
 #
-#    Args:
-#        dfas: A `list` of `Automaton` instances.
-#        num_words: An `int` to the number of drawn sub-words.
-#        max_length: The maximum word length allowed once words are concatenated.
-#        distribution_dfa: A list mapping each `Automaton` of `dfas` with its
-#            probability. `distribution_dfa` must sum to `1.0`. Pass `None`
-#            for uniform distribution.
-#        + parameters of `random_word_from_automaton`.
-#    Returns:
-#        A `list` of `str` resulting from the samplings.
-#        Some elements of the list may be `None` in case of reject.
-#    """
-#    if distribution_dfa is None:
-#        distribution_dfa = [1 / len(dfas) for _ in range(len(dfas))]
-#    assert len(distribution_dfa) == len(dfas)
-#    assert 0.99 < sum(distribution_dfa) < 1.01
+#     Args:
+#         dfas: A `list` of `Automaton` instances.
+#         num_words: An `int` to the number of drawn sub-words.
+#         max_length: The maximum word length allowed once words are concatenated.
+#         distribution_dfa: A list mapping each `Automaton` of `dfas` with its
+#             probability. `distribution_dfa` must sum to `1.0`. Pass `None`
+#             for uniform distribution.
+#         + parameters of `random_word_from_automaton`.
+#     Returns:
+#         A `list` of `str` resulting from the samplings.
+#         Some elements of the list may be `None` in case of reject.
+#     """
+#     if distribution_dfa is None:
+#         distribution_dfa = [1 / len(dfas) for _ in range(len(dfas))]
+#     assert len(distribution_dfa) == len(dfas)
+#     assert 0.99 < sum(distribution_dfa) < 1.01
 #
-#    def sample(dfas, num_words, repeat, max_sampling):
-#        words = list()
-#        for i in range(num_words):
-#            g = choices(population=dfas, weights=distribution_dfa)[0]
-#            w = random_word_from_automaton(g, p, repeat, max_sampling)
-#            words.append(w)
-#        return words if len("".join(words)) < max_length else None
+#     def sample(dfas, num_words, repeat, max_sampling):
+#         words = list()
+#         for i in range(num_words):
+#             g = choices(population=dfas, weights=distribution_dfa)[0]
+#             w = random_word_from_automaton(g, p, repeat, max_sampling)
+#             words.append(w)
+#         return words if len("".join(words)) < max_length else None
 #
-#    return reject_sampling(
-#        partial(sample, dfas, num_words, repeat, max_sampling),
-#        repeat,
-#        max_sampling
-#    )
+#     return reject_sampling(
+#         partial(sample, dfas, num_words, repeat, max_sampling),
+#         repeat,
+#         max_sampling
+#     )
 
 
 def random_ast(

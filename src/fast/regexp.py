@@ -4,7 +4,7 @@
 """Functions used to craft automata from regular expressions."""
 
 from string import printable
-from pybgl.automaton import Automaton, add_edge, set_final
+from pybgl.automaton import Automaton
 from pybgl.regexp import compile_dfa
 
 
@@ -169,7 +169,7 @@ def make_dfa_empty() -> Automaton:
         The corresponding :py:class:`Automaton`.
     """
     dfa_empty = Automaton(1)
-    set_final(0, dfa_empty, False)
+    dfa_empty.set_final(0, False)
     return dfa_empty
 
 
@@ -191,9 +191,9 @@ def make_dfa_any(alphabet: iter = None, separator_alphabet: iter = None) -> Auto
     if not separator_alphabet:
         separator_alphabet = {" ", "\t", "\n"}
     dfa_any = Automaton(2)
-    set_final(1, dfa_any)
+    dfa_any.set_final(1)
     restricted_alphabet = sorted(set(alphabet) - set(separator_alphabet))
     for a in restricted_alphabet:
-        add_edge(0, 1, a, dfa_any)
-        add_edge(1, 1, a, dfa_any)
+        dfa_any.add_edge(0, 1, a)
+        dfa_any.add_edge(1, 1, a)
     return dfa_any

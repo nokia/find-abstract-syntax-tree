@@ -48,7 +48,7 @@ class CBFS:
 
         result = hq.heappop(self.queues[self.pop_idx])
         self.num_popped += 1
-        self.num_items -= 1 # TODO if self.num_items > 0:
+        self.num_items -= 1  # TODO if self.num_items > 0:
         return result
 
     def push(self, item: object, push_idx: int):
@@ -67,4 +67,4 @@ class CBFS:
         """
         Checks whether this :py:class:`CBFS` instance contains at least one item.
         """
-        return self.num_items <= 0 # TODO == 0
+        return self.num_items <= 0  # TODO == 0

@@ -3,7 +3,7 @@
 
 from pybgl.automaton import Automaton, vertices
 from pybgl.regexp import compile_dfa
-#from .brzozowski_minimization import brzozowski_minimization
+# from .brzozowski_minimization import brzozowski_minimization
 from .regexp_ast import RegexpAst
 
 
@@ -44,8 +44,8 @@ def dfa_density(dfa: Automaton, length: int, char_proba: float):
 
 def ast_density(
     ast: RegexpAst,
-    map_len_proba :dict,
-    char_proba :float,
+    map_len_proba: dict,
+    char_proba: float,
     map_pa_infix_re: dict = None
 ) -> float:
     """

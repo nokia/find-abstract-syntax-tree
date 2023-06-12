@@ -119,6 +119,7 @@ def fast_from_strings(
 
     def next_symbols(example, j: int) -> iter:
         if isinstance(example, PatternAutomaton):
+            pa = example
             return (
                 (pa.label(e), pa.target(e))
                 for e in pa.out_edges(j)
@@ -127,7 +128,6 @@ def fast_from_strings(
             sigma = w[j]
             k = j + 1
             return [(sigma, k)]
-
 
     # Maximum progression of the problem
     total_depth = sum(
@@ -391,7 +391,7 @@ def fast_from_re(
 def fast_benchmark(
     map_relen_numre: dict = None,
     alphabet: list = None,
-    num_examples = 10,
+    num_examples: int = 10,
     *cls,
     **kwargs
 ) -> float:
@@ -456,7 +456,7 @@ def fast_benchmark(
             solutions = sorted(
                 fast(
                     list(examples),
-                    stop_condition = lambda final_results, time_elapsed: len(final_results) == 1 or time_elapsed > 10,
+                    stop_condition=lambda final_results, time_elapsed: len(final_results) == 1 or time_elapsed > 10,
                     *cls, **kwargs
                 ),
                 key=lambda solution: solution[0],

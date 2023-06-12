@@ -7,7 +7,7 @@ from pybgl.automaton import Automaton, EdgeDescriptor
 from pybgl.deterministic_inclusion import deterministic_inclusion
 from pybgl.dijkstra_shortest_paths import dijkstra_shortest_path, make_path
 from pybgl.property_map import (
-    ReadPropertyMap, make_assoc_property_map, make_func_property_map
+    make_assoc_property_map, make_func_property_map
 )
 from .multi_grep import MultiGrepFonctorLargest, multi_grep
 
@@ -15,38 +15,38 @@ from .multi_grep import MultiGrepFonctorLargest, multi_grep
 # Can possibly drops some arcs, e.g. "spaces" arcs
 class PatternAutomaton(Automaton):
     """
-    A PatternAutomaton models a string at the pattern level using a automaton-like structure
-    whose vertices corresponds to a subset of string indices and arcs corresponds to infixes
-    and their related pattern.
+    A :py:class:`PatternAutomaton` instance represents a string at the pattern level
+    using a automaton-like structure, whose vertices corresponds to a subset of
+    string indices, and arcs corresponds to infixes and their related pattern.
     """
     def __init__(
         self,
         word: str,
         map_name_dfa: dict,
         make_mg: callable = None,
-        filtered_patterns = None
+        filtered_patterns: set = None
     ):
         """
-        Constructs the `PatternAutomaton` related to an input words according
-        to a collection of patterns and according to a `multi_grep` stategy.
+        Constructs the `PatternAutomaton` related to an input word according
+        to a collection of patterns and according to a :py:func:`multi_grep` stategy.
 
         Args:
-            word: An `str` instance.
-            map_name_dfa: A `dict{str: Automaton}` mapping each relevant type with its
+            word (str): The input word.
+            map_name_dfa (dict): A ``dict{str: Automaton}`` mapping each relevant type with its
                 corresponding `Automaton` instance.
-            filtered_patterns: A subset (possibly empty) of `map_name_dfa.keys()` of type
-                that must be catched my multi_grep, but not reflected as arcs in the
-                `PatternAutomaton`. It can be used e.g. to drop spaces an get a smaller
-                `PatternAutomaton`, but the position of spaces in the original lines will be lost.
+            filtered_patterns (set): A subset (possibly empty) of
+                ``map_name_dfa.keys()`` of type
+                that must be catched my multi_grep, but not reflected as arcs in this
+                :py:class:`PatternAutomaton` instance.
+                It can be used e.g. to drop spaces an get a smaller
+                :py:class:`PatternAutomaton`, but the position of spaces
+                in the original lines will be lost.
         """
         if filtered_patterns is None:
-#            filtered_patterns = {"spaces"} # This will pose problem to transform PA to regexp
             filtered_patterns = set()
         if not make_mg:
             make_mg = MultiGrepFonctorLargest
         mg = make_mg()
-
-        pattern_names = list(map_name_dfa.keys())
 
         # Add vertices
         n = len(word)
@@ -94,8 +94,12 @@ class PatternAutomaton(Automaton):
         """
         Retrieves the slice (pair of uint indices) related to an edge.
 
+        Args:
+            e (EdgeDescriptor): The considered edge.
+
         Returns:
-            The slice related to an arbitrary edge of this PatternAutomaton instance.
+            The slice related to an arbitrary edge of this
+            :py:class:`PatternAutomaton` instance.
         """
         j = self.source(e)
         k = self.target(e)
@@ -105,8 +109,12 @@ class PatternAutomaton(Automaton):
         """
         Retrieves the infix (substring) related to an edge.
 
+        Args:
+            e (EdgeDescriptor): The considered edge.
+
         Returns:
-            The infix related to an arbitrary edge of this PatternAutomaton instance.
+            The infix related to an arbitrary edge of this
+            :py:class:`PatternAutomaton` instance.
         """
         (j, k) = self.get_slice(e)
         return self.w[j:k]
@@ -114,11 +122,12 @@ class PatternAutomaton(Automaton):
     def __eq__(self, pa) -> bool:
         """
         Equality operator. This implementation assumes
-        that `PatternAutomaton` using `MultiGrepFonctorLargest` or
-        `MultiGrepFonctorLargest` are minimal.
+        that :py:class:`PatternAutomaton` using :py:class:`MultiGrepFonctorLargest` or
+        :py:class:`MultiGrepFonctorLargest` are minimal.
 
         Args:
-            pa: A `PatternAutomaton` instance.
+            pa (PatternAutomaton): A `PatternAutomaton` instance.
+
         Returns:
             True iff `self` matches another `PatternAutomaton` instance.
         """
@@ -135,6 +144,14 @@ def pattern_automaton_edge_weight(
     g: PatternAutomaton,
     map_name_density: dict = None
 ) -> float:
+    """
+    Gets the weight of an edge.
+
+    Args:
+        e (EdgeDescriptor): The considered edge.
+        g (PatternAutomaton): A :py:class:`PatternAutomaton` instance.
+
+    """
     a = g.label(e)
     return map_name_density.get(a, 1.0) if map_name_density else 1.0
 

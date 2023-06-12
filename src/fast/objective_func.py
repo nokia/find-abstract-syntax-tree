@@ -35,12 +35,12 @@ def make_additive_objective_func_for_str(
         the returned value is the objective function value given `ast`.
     """
     # TODO Merge size_factor and density_factor
-    #examples_sizes = [len(example.w) for example in examples]
+    # examples_sizes = [len(example.w) for example in examples]
     # map_len_proba = {
     #     length:  examples_sizes.count(length) / len(examples_sizes)
     #     for length in set(examples_sizes)
     # }
-    #max_len = max(examples_sizes)
+    # max_len = max(examples_sizes)
     max_len = max(
         len(example.w) if isinstance(example, PatternAutomaton)
         else len(example)
@@ -94,7 +94,7 @@ def make_normalized_additive_objective_func_for_str(
         for example in examples
     ]
 
-    #examples_sizes = [len(example.w) for example in examples]
+    # examples_sizes = [len(example.w) for example in examples]
     total_examples_size = sum(examples_sizes) + len(examples_sizes) + 1
     map_len_proba = {
         length: examples_sizes.count(length) / len(examples_sizes)
