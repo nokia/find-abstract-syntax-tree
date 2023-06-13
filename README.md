@@ -4,7 +4,7 @@
 [![Build](https://github.com/nokia/find-abstract-syntax-tree/workflows/build/badge.svg)](https://github.com/nokia/find-abstract-syntax-tree/actions/workflows/build.yml)
 [![Documentation](https://github.com/nokia/find-abstract-syntax-tree/workflows/docs/badge.svg)](https://github.com/nokia/find-abstract-syntax-tree/actions/workflows/docs.yml)
 [![ReadTheDocs](https://readthedocs.org/projects/find-abstract-syntax-tree/badge/?version=latest)](https://find-abstract-syntax-tree.readthedocs.io/en/latest/?badge=latest)
-[![codecov](https://codecov.io/gh/nokia/find-abstract-syntax-tree/branch/master/graph/badge.svg?token=OZM4J0Y2VL)](https://codecov.io/gh/nokia/find-abstract-syntax-tree)
+[![codecov](https://codecov.io/gh/nokia/find-abstract-syntax-tree/branch/main/graph/badge.svg?token=I7FEGOOYFG)](https://codecov.io/gh/nokia/find-abstract-syntax-tree)
 
 ## Overview
 
