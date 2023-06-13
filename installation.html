@@ -390,7 +390,9 @@ sudo<span class="w"> </span>pip3<span class="w"> </span>install<span class="w"> 
 <h2>Package installation<a class="headerlink" href="#package-installation" title="Permalink to this heading">#</a></h2>
 <section id="from-pip">
 <h3>From pip<a class="headerlink" href="#from-pip" title="Permalink to this heading">#</a></h3>
-<p>As the package is not released as an open source project, an installation via PIP is not possible.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">pip3</span> <span class="n">install</span> <span class="n">find</span><span class="o">-</span><span class="n">abstract</span><span class="o">-</span><span class="n">syntax</span><span class="o">-</span><span class="n">tree</span>
+</pre></div>
+</div>
 </section>
 <section id="from-git">
 <h3>From git<a class="headerlink" href="#from-git" title="Permalink to this heading">#</a></h3>
@@ -435,36 +437,6 @@ deactivate<span class="w">               </span><span class="c1"># Leave the  &q
 </pre></div>
 </div>
 </section>
-</section>
-<section id="get-and-prepare-the-input-videos">
-<h2>Get and prepare the input videos<a class="headerlink" href="#get-and-prepare-the-input-videos" title="Permalink to this heading">#</a></h2>
-<p>We now prepare the input videos.</p>
-<ul class="simple">
-<li><p>Create the <code class="docutils literal notranslate"><span class="pre">input/</span></code>, <code class="docutils literal notranslate"><span class="pre">output/</span></code>, <code class="docutils literal notranslate"><span class="pre">remap/</span></code> directories in the root directory of the project:</p></li>
-</ul>
-<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>mkdir<span class="w"> </span>input<span class="w"> </span>remap<span class="w"> </span>output
-</pre></div>
-</div>
-<ul class="simple">
-<li><p>Download the <a class="reference external" href="https://nokia.sharepoint.com/sites/NokiaArenaInnovationProject766/_layouts/15/stream.aspx?id=%2Fsites%2FNokiaArenaInnovationProject766%2FShared%20Documents%2FGeneral%2Ftest%20material%2FINTERNAL%20MATERIAL%2Finternally%20shared%20material%2FCONFIDENTIAL%5Ftappara%5Filves%5Fclips%2Fraw%20clips%2FNorth%5FGoal%5FCam%2FQ360%5F20220603%5F212625%5F000075%2EMOV">input video</a> <code class="docutils literal notranslate"><span class="pre">Q360_20220603_212625_000075.MOV</span></code> in the <code class="docutils literal notranslate"><span class="pre">input/</span></code> directory.</p></li>
-<li><p><a class="reference external" href="https://superuser.com/questions/1479702/how-to-list-streams-with-ffmpeg">List the video streams</a> by using <code class="docutils literal notranslate"><span class="pre">ffprobe</span></code>. It shows that <code class="docutils literal notranslate"><span class="pre">Q360_20220603_212625_000075.MOV</span></code> provides two video streams, namely <code class="docutils literal notranslate"><span class="pre">0:0</span></code> and <code class="docutils literal notranslate"><span class="pre">0:1</span></code>:</p></li>
-</ul>
-<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>ffprobe<span class="w"> </span>-i<span class="w"> </span>input/Q360_20220603_212625_000075.MOV
-</pre></div>
-</div>
-<ul class="simple">
-<li><p>Extract each stream <code class="docutils literal notranslate"><span class="pre">ffmpeg</span></code>. Note that only the front video (<code class="docutils literal notranslate"><span class="pre">0:0</span></code>) is relevant.</p></li>
-</ul>
-<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>ffmpeg<span class="w"> </span>-i<span class="w"> </span>input/Q360_20220603_212625_000075.MOV<span class="w"> </span>-map<span class="w"> </span><span class="m">0</span>:0<span class="w"> </span>-c<span class="w"> </span>copy<span class="w"> </span>input/raw_north_back.mov
-ffmpeg<span class="w"> </span>-i<span class="w"> </span>input/Q360_20220603_212625_000075.MOV<span class="w"> </span>-map<span class="w"> </span><span class="m">0</span>:1<span class="w"> </span>-c<span class="w"> </span>copy<span class="w"> </span>input/raw_north_front.mov
-</pre></div>
-</div>
-<ul class="simple">
-<li><p>Remove the <a class="reference external" href="https://docs.opencv.org/4.x/dc/dbb/tutorial_py_calibration.html">distorsion</a> introduced by the camera lense:</p></li>
-</ul>
-<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>python3<span class="w"> </span>remap.py<span class="w"> </span>--input<span class="w"> </span>input/raw_north_front.mov<span class="w"> </span>--output<span class="w"> </span>remap/remap_north_front.mp4
-</pre></div>
-</div>
 </section>
 </section>
 
@@ -522,7 +494,6 @@ ffmpeg<span class="w"> </span>-i<span class="w"> </span>input/Q360_20220603_2126
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#from-git">From git</a></li>
 </ul>
 </li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#get-and-prepare-the-input-videos">Get and prepare the input videos</a></li>
 </ul>
   </nav></div>
 
