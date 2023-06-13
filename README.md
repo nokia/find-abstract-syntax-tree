@@ -1,6 +1,6 @@
 # fAST (find Abstract Syntax Tree)
 
-[![PyPI](https://img.shields.io/pypi/v/regexp_learner.svg)](https://pypi.python.org/pypi/regexp_learner/)
+[![PyPI](https://img.shields.io/pypi/v/find_abstract_syntax_tree.svg)](https://pypi.python.org/pypi/find-abstract-syntax-tree)
 [![Build](https://github.com/nokia/find-abstract-syntax-tree/workflows/build/badge.svg)](https://github.com/nokia/find-abstract-syntax-tree/actions/workflows/build.yml)
 [![Documentation](https://github.com/nokia/find-abstract-syntax-tree/workflows/docs/badge.svg)](https://github.com/nokia/find-abstract-syntax-tree/actions/workflows/docs.yml)
 [![ReadTheDocs](https://readthedocs.org/projects/find-abstract-syntax-tree/badge/?version=latest)](https://find-abstract-syntax-tree.readthedocs.io/en/latest/?badge=latest)
