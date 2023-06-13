@@ -12,11 +12,26 @@
 
 The fAST algorithm is described in:
 
-[[ICGI'2023](https://icgi2023.inria.fr/)] fAST: regular expression inference from positive examples using Abstract Syntax Trees, Maxime Raynal, Marc-Olivier Buob, Georges Quénot.
+[[ICGI'2023](https://icgi2023.inria.fr/)] fAST: regular expression inference from positive examples using Abstract Syntax Trees, [Maxime Raynal](https://raynalm.github.io/), [Marc-Olivier Buob](https://www.bell-labs.com/about/researcher-profiles/marc-olivier-buob/), [Georges Quénot](http://mrim.imag.fr/georges.quenot/).
 
 This module is built on top of:
 * [numpy](https://pypi.org/project/numpy/);
 * [pybgl](https://pypi.org/project/pybgl/), a lightweight graph library.
+
+## Quick start
+
+Install the package through PIP:
+```bash
+pip3 install find-abstract-syntax-tree
+```
+In your python interpreter, run:
+```python
+from fast import fast
+
+results = fast(["abc", "abcabc", "abcabcabc"])
+for (score, ast) in results:
+    print(score, ast.to_infix_regexp_str())
+```
 
 ## Links
 
