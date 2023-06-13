@@ -4,7 +4,7 @@
 Ensure the needed dependencies are installed in `poetry`:
 
 ```bash
-poetry install --with test
+poetry install --with test,dev
 ```
 
 ## Package installation (`poetry` + `pip3`)
@@ -153,4 +153,43 @@ poetry run make docs
 ```bash
 poetry run sphinx-apidoc -f -o docs/ src/
 poetry run sphinx-build -b html docs/ docs/_build
+```
+
+## Publishing a release
+### Initialization
+
+1. Create a token in Pypi.
+
+2. Configure this token in your GitHub repository (in the settings tab)
+* `PYPI_USERNAME`: `__token__`
+* `PYPI_TOKEN`: `pypi-xxxxxxxxxxxx`
+
+3. Configure this token in poetry so that you can use `poetry publish` in the future
+```bash
+poetry config pypi-token.pypi pypi-xxxxxxxxxxxx
+```
+
+### New release
+
+1. Update the changelog `HISTORY.md`, then add and commit this change:
+
+```bash
+git add README.md
+git commit -m "Updated README.md"
+```
+
+2. Increase the version number using `bumpversion`:
+
+```bash
+bumpversion patch # Possible values major / minor / patch
+git push
+git push --tags
+```
+
+3. Optionnally, in GitHub, create a release for the tag you have created.
+It publishes the package to PyPI (see `.github/workflows/publish_on_pypi.yml`).
+Alternatively, you could run:
+
+```bash
+poetry publish
 ```

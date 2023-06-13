@@ -8,7 +8,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
-    <title>Developer’s corner &#8212; fAST - find Abstract Syntax Tree 0.0.1 documentation</title>
+    <title>Developer’s corner &#8212; fAST - find Abstract Syntax Tree 0.1.0 documentation</title>
   
   
   
@@ -103,7 +103,7 @@
   
   
   
-    <p class="title logo__title">fAST - find Abstract Syntax Tree 0.0.1 documentation</p>
+    <p class="title logo__title">fAST - find Abstract Syntax Tree 0.1.0 documentation</p>
   
 </a></div>
     
@@ -364,7 +364,7 @@ document.write(`
 <section id="preliminaries">
 <h2>Preliminaries<a class="headerlink" href="#preliminaries" title="Permalink to this heading">#</a></h2>
 <p>Ensure the needed dependencies are installed in <code class="docutils literal notranslate"><span class="pre">poetry</span></code>:</p>
-<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>poetry<span class="w"> </span>install<span class="w"> </span>--with<span class="w"> </span><span class="nb">test</span>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>poetry<span class="w"> </span>install<span class="w"> </span>--with<span class="w"> </span>test,dev
 </pre></div>
 </div>
 </section>
@@ -536,6 +536,52 @@ poetry<span class="w"> </span>run<span class="w"> </span>sphinx-build<span class
 </div>
 </section>
 </section>
+<section id="publishing-a-release">
+<h2>Publishing a release<a class="headerlink" href="#publishing-a-release" title="Permalink to this heading">#</a></h2>
+<section id="initialization">
+<h3>Initialization<a class="headerlink" href="#initialization" title="Permalink to this heading">#</a></h3>
+<ol class="arabic simple">
+<li><p>Create a token in Pypi.</p></li>
+<li><p>Configure this token in your GitHub repository (in the settings tab)</p></li>
+</ol>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">PYPI_USERNAME</span></code>: <code class="docutils literal notranslate"><span class="pre">__token__</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">PYPI_TOKEN</span></code>: <code class="docutils literal notranslate"><span class="pre">pypi-xxxxxxxxxxxx</span></code></p></li>
+</ul>
+<ol class="arabic simple">
+<li><p>Configure this token in poetry so that you can use <code class="docutils literal notranslate"><span class="pre">poetry</span> <span class="pre">publish</span></code> in the future</p></li>
+</ol>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>poetry<span class="w"> </span>config<span class="w"> </span>pypi-token.pypi<span class="w"> </span>pypi-xxxxxxxxxxxx
+</pre></div>
+</div>
+</section>
+<section id="new-release">
+<h3>New release<a class="headerlink" href="#new-release" title="Permalink to this heading">#</a></h3>
+<ol class="arabic simple">
+<li><p>Update the changelog <code class="docutils literal notranslate"><span class="pre">HISTORY.md</span></code>, then add and commit this change:</p></li>
+</ol>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>git<span class="w"> </span>add<span class="w"> </span>README.md
+git<span class="w"> </span>commit<span class="w"> </span>-m<span class="w"> </span><span class="s2">&quot;Updated README.md&quot;</span>
+</pre></div>
+</div>
+<ol class="arabic simple">
+<li><p>Increase the version number using <code class="docutils literal notranslate"><span class="pre">bumpversion</span></code>:</p></li>
+</ol>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>bumpversion<span class="w"> </span>patch<span class="w"> </span><span class="c1"># Possible values major / minor / patch</span>
+git<span class="w"> </span>push
+git<span class="w"> </span>push<span class="w"> </span>--tags
+</pre></div>
+</div>
+<ol class="arabic simple">
+<li><p>Optionnally, in GitHub, create a release for the tag you have created.</p></li>
+</ol>
+<p>It publishes the package to PyPI (see <code class="docutils literal notranslate"><span class="pre">.github/workflows/publish_on_pypi.yml</span></code>).
+Alternatively, you could run:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>poetry<span class="w"> </span>publish
+</pre></div>
+</div>
+</section>
+</section>
 </section>
 
 
@@ -609,6 +655,11 @@ poetry<span class="w"> </span>run<span class="w"> </span>sphinx-build<span class
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#dependencies">Dependencies</a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#with-make">With <code class="docutils literal notranslate"><span class="pre">make</span></code></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#without-make">Without <code class="docutils literal notranslate"><span class="pre">make</span></code></a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#publishing-a-release">Publishing a release</a><ul class="visible nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#initialization">Initialization</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#new-release">New release</a></li>
 </ul>
 </li>
 </ul>
