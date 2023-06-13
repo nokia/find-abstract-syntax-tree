@@ -24,7 +24,9 @@ sudo pip3 install sphinx_mdinclude --break-system-packages
 ## Package installation
 ### From pip
 
-As the package is not released as an open source project, an installation via PIP is not possible.
+```
+pip3 install find-abstract-syntax-tree
+```
 
 ### From git
 
@@ -62,35 +64,4 @@ deactivate               # Leave the  "env" virtual environment
 
 ```bash
 sudo pip3 install dist/*whl --break-system-packages
-```
-
-## Get and prepare the input videos
-
-We now prepare the input videos.
-
-* Create the `input/`, `output/`, `remap/` directories in the root directory of the project:
-
-```bash
-mkdir input remap output
-```
-
-* Download the [input video](https://nokia.sharepoint.com/sites/NokiaArenaInnovationProject766/_layouts/15/stream.aspx?id=%2Fsites%2FNokiaArenaInnovationProject766%2FShared%20Documents%2FGeneral%2Ftest%20material%2FINTERNAL%20MATERIAL%2Finternally%20shared%20material%2FCONFIDENTIAL%5Ftappara%5Filves%5Fclips%2Fraw%20clips%2FNorth%5FGoal%5FCam%2FQ360%5F20220603%5F212625%5F000075%2EMOV) `Q360_20220603_212625_000075.MOV` in the `input/` directory.
-
-* [List the video streams](https://superuser.com/questions/1479702/how-to-list-streams-with-ffmpeg) by using `ffprobe`. It shows that `Q360_20220603_212625_000075.MOV` provides two video streams, namely `0:0` and `0:1`:
-
-```bash
-ffprobe -i input/Q360_20220603_212625_000075.MOV
-```
-
-* Extract each stream `ffmpeg`. Note that only the front video (`0:0`) is relevant.
-
-```bash
-ffmpeg -i input/Q360_20220603_212625_000075.MOV -map 0:0 -c copy input/raw_north_back.mov
-ffmpeg -i input/Q360_20220603_212625_000075.MOV -map 0:1 -c copy input/raw_north_front.mov
-```
-
-* Remove the [distorsion](https://docs.opencv.org/4.x/dc/dbb/tutorial_py_calibration.html) introduced by the camera lense:
-
-```bash
-python3 remap.py --input input/raw_north_front.mov --output remap/remap_north_front.mp4
 ```
