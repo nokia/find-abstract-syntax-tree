@@ -170,7 +170,12 @@ class DownDotMutator(Mutator):
         # ipynb_display_graph(new_ast)
         # print(new_leaf)
         # print("3bis____________end")
-        # if new_ast.recognizes_pa_prefix(current_pa, target_pa_node=len(prefix_word), target_ast_leaf=new_leaf):
+        # if new_ast.recognizes_pa_prefix(
+        #     current_pa,
+        #     target_pa_node=len(prefix_word),
+        #     target_ast_leaf=new_leaf
+        # ):
+        #
         #     if all(
         #             new_ast.recognizes_pa(pa) for pa in previous_words
         #     ):  # case where all works without the '?'
@@ -245,10 +250,11 @@ class UpDotMutator(Mutator):
                 )
             )
         ):
-            # If the example is "abcd" and the current character is "c", then the target_pa
-            # node is "c" and the prefix to recognize is "abc"
+            # If the example is "abcd" and the current character is "c", then
+            # the target_pa node is "c" and the prefix to recognize is "abc".
             # MANDO: there is a bug here. For example if
-            # S = {"abc", "abcabc", "abcabcabc"}, there is a ? node on top of the "c" leaf.
+            # S = {"abc", "abcabc", "abcabcabc"}, there is a ? node on top of
+            # the "c" leaf.
             # MAX: the bug could be in target_pa_node (check indices) or
             # in recognizes_pa_prefix. Hopefully this is the first reason.
             if all(
@@ -539,7 +545,11 @@ class BounceQuestionMutator(Mutator):
         # In any case, we simply introduce a '?' between u & v
         new_ast = ast.copy()
         new_question_node = new_ast.add_node(label="?")
-        new_ast.set_ith_child(u, new_question_node, new_ast.get_arc_index(u, v))
+        new_ast.set_ith_child(
+            u,
+            new_question_node,
+            new_ast.get_arc_index(u, v)
+        )
         # new_ast.map_node_children[u][new_ast.get_arc_index(u, v)] = new_question_node
         new_ast.set_child(new_question_node, v)
         # create a 'local' epsilon_reachables specific to this new ast
@@ -679,7 +689,9 @@ class BounceQuestionMutator(Mutator):
                     (new_ast, all_epsilon_reachables, newly_eps_reachables)
                 ]
             # print("12_____end")
-        for new_ast, all_epsilon_reachables, newly_eps_reachables in asts_to_bounce_on:
+        for (
+            new_ast, all_epsilon_reachables, newly_eps_reachables
+        ) in asts_to_bounce_on:
             for uu, vv in newly_eps_reachables:
                 if (uu, vv) not in all_epsilon_reachables:
                     # print("ouch1")

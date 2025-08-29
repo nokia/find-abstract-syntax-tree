@@ -25,11 +25,17 @@ class RegexpAst:
         """
         Constructor.
         """
-        self.num_nodes = 0               # counts the actual number of nodes
-        self.nodes_id = 0                # node id for next new node
-        self.map_node_label = dict()     # Maps vertex to its label
-        self.map_node_parent = dict()    # Maps a vertex to its parent node # TODO use defaultdict(lambda: None)
-        self.map_node_children = dict()  # Maps a vertex to its child(ren) (if any) # TODO use defaultdict(list)
+        self.num_nodes = 0
+        # Counts the actual number of nodes
+        self.nodes_id = 0
+        # Node ID for next new node
+        self.map_node_label = dict()
+        # Maps vertex to its label
+        self.map_node_parent = dict()
+        # Maps a vertex to its parent node # TODO use defaultdict(lambda: None)
+        self.map_node_children = dict()
+        # Maps a vertex to its child(ren) (if any) # TODO use defaultdict(list)
+
         # Create a root node
         self.root = self.add_node(label=self.ROOT)
         self.set_child(self.root, None)
@@ -99,7 +105,8 @@ class RegexpAst:
         """
         Checks whether a node is unary.
         It concerns nodes labeled by an unary regular expression operator
-        (i.e., "+", "*", "?") and the root of this :py:class:``RegexpAst`` instance.
+        (i.e., "+", "*", "?") and the root of this
+        :py:class:``RegexpAst`` instance.
 
         Args:
             u (int): The vertex descriptor of the considered node.
@@ -202,7 +209,8 @@ class RegexpAst:
             The vertex descriptor of the first child of ``u``.
 
         Raises:
-            `IndexError` if the node is a leaf. See also :py:meth:`RegexpAst.is_leaf`.
+            `IndexError`: if the node is a leaf.
+                See also the :py:meth:`RegexpAst.is_leaf` method.
         """
         return self.map_node_children[u][0]
 
@@ -218,7 +226,8 @@ class RegexpAst:
             The vertex descriptor of the ``i``-th child of ``u``.
 
         Raises:
-            `IndexError` if the node is a leaf. See also :py:meth:`RegexpAst.is_leaf`.
+            `IndexError`: if the node is a leaf.
+                See also the :py:meth:`RegexpAst.is_leaf` method.
         """
         return self.map_node_children[u][i]
 
@@ -523,7 +532,8 @@ class RegexpAst:
 
     def simplify(self, active_leaf: int = None):
         """
-        Applies the following simplifications on this :py:class:`RegexpAst` instance.
+        Applies the following simplifications on this
+        :py:class:`RegexpAst` instance.
 
         - :py:meth:`RegexpAst.simplify_unary_nodes`
         - :py:meth:`RegexpAst.simplify_n_ary_nodes`
@@ -536,8 +546,15 @@ class RegexpAst:
         self.simplify_unary_nodes()  # ++ -> + ; ?? -> ? ,; ?+ -> * etc.
         self.simplify_n_ary_nodes()  # (a.b).c -> (a.b.c)
         self.reorder_or_nodes()      # b|a -> a|b
-        # self.simplify_or_nodes(active_leaf=active_leaf) # MANDO: a | a -> a. Be cautious, do not remove if a is the source of the active arc.
-        self.remove_unary_n_aries()  # When inserting unary node, some binary node may get only one operand and hence become useless. We just remove the useless operator. |a -> a ; .a -> a
+        # <<<
+        # self.simplify_or_nodes(active_leaf=active_leaf)
+        # MANDO: a | a -> a. Be cautious, do not remove if
+        # a is the source of the active arc.
+        # >>>
+        self.remove_unary_n_aries()
+        # When inserting unary node, some binary node may get
+        # only one operand and hence become useless.
+        # We just remove the useless operator. |a -> a ; .a -> a
 
     def simplify_unary_nodes(self, u=None):
         # print("8______start")
@@ -570,8 +587,11 @@ class RegexpAst:
 
     def merge_n_ary_nodes(self, u, v, remove_v=True):
         i = self.get_arc_index(u, v)
-        self.map_node_children[u] = self.map_node_children[u][:i] \
-            + self.map_node_children[v] + self.map_node_children[u][i+1:]
+        self.map_node_children[u] = (
+            self.map_node_children[u][:i]
+            + self.map_node_children[v]
+            + self.map_node_children[u][i+1:]
+        )
         for v_child in self.children(v):
             self.map_node_parent[v_child] = u
         if remove_v:
@@ -626,7 +646,14 @@ class RegexpAst:
                             to_remove.add(v)
                     else:
                         children_prefixes[v_prefix] = v
-                self.set_children(u, [v for v in self.children(u) if v not in to_remove])
+                self.set_children(
+                    u,
+                    [
+                        v
+                        for v in self.children(u)
+                        if v not in to_remove
+                    ]
+                )
 
     def reorder_or_nodes(self, u=None):
         if u is None:
@@ -686,13 +713,17 @@ class RegexpAst:
 
     def walk_one_char(self, u: int, a: str, verbose: bool = False) -> set:
         """
-        Performs a single character walk on this :py:class:`RegexpAst` instance.
+        Performs a single character walk on this :py:class:`RegexpAst`
+        instance.
         Starts the walk on the node u (u must be a leaf or the root),
         and returns the set of leaves labeled by ``a``
         that are epsilon-reachable from ``u``.
 
         Args:
             a (str): A symbol, e.g. "a" or "$date".
+
+        Returns:
+            The set of leaves that are reached from ``u`` by consuming ``a``.
         """
         result = set()
         v = self.parent(u)  # if u is root, v will be None
@@ -714,13 +745,14 @@ class RegexpAst:
         involved in an input word.
 
         Args:
-            u (int): The vertex descriptor of the starting node. Pass ``None`` to start
-                from the root of this :py:class:`RegexpAst` instance. Defaults to ``None``.
-            w (list): The input word, which is a list of symbols, where each symbol
-               is a string (e.g. "a" or "$date").
+            u (int): The vertex descriptor of the starting node.
+                Pass ``None`` to start from the root of this
+                :py:class:`RegexpAst` instance. Defaults to ``None``.
+            w (list): The input word, which is a list of symbols,
+                where each symbol s a string (e.g., ``"a"`` or ``"$date"``).
 
         Returns:
-            The set of vertex descriptor that are reachable from ``u`` by consuming ``w``
+            The set of leaves that are reached from ``u`` by consuming ``w``.
         """
         if u is None:
             u = self.root
@@ -738,11 +770,19 @@ class RegexpAst:
             else self.recognizes_word(x)
         )
 
-    def recognizes_pa(self, pa: PatternAutomaton, verbose: bool = False) -> bool:
-        # bot = AST root.
-        # With str: is there a path from bot to bot recognizing an arbirary word.
-        # With PAs: is there a path from bot to bot recognizing a path from the source
-        #     to the sink of the PA.
+    def recognizes_pa(
+        self,
+        pa: PatternAutomaton,
+        verbose: bool = False
+    ) -> bool:
+        """
+        Let :math:`bot` be the root of the AST.
+
+        - With str: is there a path from bot to :math:`\\bot`
+          recognizing an arbirary word?
+        - With PAs: is there a path from bot to :math:`\\bot`
+          recognizing a path from the source to the sink of the PA?
+        """
         stack = deque()
         u = self.root
         stack.append((u, 0))
@@ -758,7 +798,7 @@ class RegexpAst:
                 else:
                     continue
             for e in pa.out_edges(q):
-                r = e.m_target  # TODO pa.target(e)
+                r = pa.target(e)
                 p = pa.label(e)
                 compatible_leaves = self.walk_one_char(u, p, verbose=verbose)
                 for leaf in compatible_leaves:
@@ -773,20 +813,22 @@ class RegexpAst:
         u: int = None
     ) -> bool:
         """
-        Tests whether there exists in this py:class:`RegexpAst` instance
+        Tests whether there exists in this :py:class:`RegexpAst` instance
         a path from its root to ``target_ast_leaf`` that corresponds to
         a path from the source of a given :py:class:`PatternAutomaton` instance
         to ``target_ast_leaf``.
 
         Args:
-            pa (PatternAutomaton): A :py:class:`PatternAutomaton` instance (modeling
-                a positive example).
-            target_pa_node (int): The vertex descriptor of the target node in ``pa``.
-            target_ast_leaf (int): The vertex descriptor target leaf in ``self``.
+            pa (PatternAutomaton): A :py:class:`PatternAutomaton` instance
+                (modeling a positive example).
+            target_pa_node (int): The vertex descriptor of the target node
+                in ``pa``.
+            target_ast_leaf (int): The vertex descriptor target leaf
+                in ``self``.
             u (int): Pass ``None``.
 
         Returns:
-             ``True`` iff this py:class:`RegexpAst` instance matches ``pa``,
+             ``True`` iff this :py:class:`RegexpAst` instance matches ``pa``,
             ``False`` otherwise.
         """
         stack = deque()
@@ -812,10 +854,11 @@ class RegexpAst:
         Tests whether a word is matched by this :py:class:`RegexpAst` instance.
 
         Args:
-            w (list): A list of symbols, where each symbol is a string (e.g. "a" or "$date").
+            w (list): A list of symbols, where each symbol is a string
+                (e.g. ``"a"`` or ``"$date"``).
 
         Returns:
-            ``True`` iff this py:class:`RegexpAst` instance matches ``w``,
+            ``True`` iff this :py:class:`RegexpAst` instance matches ``w``,
             ``False`` otherwise.
         """
         possible_last_leaves = self.walk_word(w)
@@ -853,7 +896,8 @@ class RegexpAst:
 
     def edges(self) -> iter:
         """
-        Retrieves an iterator over the edges of this py:class:`RegexpAst` instance.
+        Retrieves an iterator over the edges of this :py:class:`RegexpAst`
+        instance.
 
         Returns:
             An iterator over this :py:class:`RegexpAst` instance edges.
@@ -866,7 +910,8 @@ class RegexpAst:
 
     def out_edges(self, u: int) -> iter:
         """
-        Retrieves an iterator over the out-edges of this py:class:`RegexpAst` instance.
+        Retrieves an iterator over the out-edges of this :py:class:`RegexpAst`
+        instance.
 
         Returns:
             An iterator over this :py:class:`RegexpAst` instance vertices.
@@ -875,7 +920,8 @@ class RegexpAst:
 
     def vertices(self) -> iter:
         """
-        Retrieves an iterator over the vertices of this py:class:`RegexpAst` instance.
+        Retrieves an iterator over the vertices of this :py:class:`RegexpAst`
+        instance.
 
         Returns:
             An iterator over this :py:class:`RegexpAst` instance vertices.

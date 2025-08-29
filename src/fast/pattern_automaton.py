@@ -18,9 +18,10 @@ from .multi_grep import MultiGrepFonctorLargest, multi_grep
 # Can possibly drops some arcs, e.g. "spaces" arcs
 class PatternAutomaton(Automaton):
     """
-    A :py:class:`PatternAutomaton` instance represents a string at the pattern level
-    using a automaton-like structure, whose vertices corresponds to a subset of
-    string indices, and arcs corresponds to infixes and their related pattern.
+    A :py:class:`PatternAutomaton` instance represents a string
+    at the pattern level using a automaton-like structure, whose
+    vertices corresponds to a subset of string indices,
+    and arcs corresponds to infixes and their related pattern.
     """
     def __init__(
         self,
@@ -31,16 +32,17 @@ class PatternAutomaton(Automaton):
     ):
         """
         Constructs the `PatternAutomaton` related to an input word according
-        to a collection of patterns and according to a :py:func:`multi_grep` stategy.
+        to a collection of patterns and according to a
+        :py:func:`multi_grep` stategy.
 
         Args:
             word (str): The input word.
-            map_name_dfa (dict): A ``dict{str: Automaton}`` mapping each relevant type with its
-                corresponding `Automaton` instance.
+            map_name_dfa (dict): A ``dict{str: Automaton}`` mapping each
+                relevant type with its corresponding `Automaton` instance.
             filtered_patterns (set): A subset (possibly empty) of
                 ``map_name_dfa.keys()`` of type
-                that must be catched my multi_grep, but not reflected as arcs in this
-                :py:class:`PatternAutomaton` instance.
+                that must be catched my multi_grep, but not reflected as
+                arcs in this :py:class:`PatternAutomaton` instance.
                 It can be used e.g. to drop spaces an get a smaller
                 :py:class:`PatternAutomaton`, but the position of spaces
                 in the original lines will be lost.
@@ -69,7 +71,11 @@ class PatternAutomaton(Automaton):
                     self.add_edge(j, k, name)
                     vertices_with_successors.add(j)
                     vertices_with_predecessors.add(k)
-            to_keep = sorted(vertices_with_successors | vertices_with_predecessors | {0, n})
+            to_keep = sorted(
+                vertices_with_successors
+                | vertices_with_predecessors
+                | {0, n}
+            )
 
             # Remove isolated vertices
             for u in range(n):
@@ -125,7 +131,8 @@ class PatternAutomaton(Automaton):
     def __eq__(self, pa) -> bool:
         """
         Equality operator. This implementation assumes
-        that :py:class:`PatternAutomaton` using :py:class:`MultiGrepFonctorLargest` or
+        that :py:class:`PatternAutomaton` using
+        :py:class:`MultiGrepFonctorLargest` or
         :py:class:`MultiGrepFonctorLargest` are minimal.
 
         Args:
@@ -134,10 +141,13 @@ class PatternAutomaton(Automaton):
         Returns:
             True iff `self` matches another `PatternAutomaton` instance.
         """
-        if self.num_vertices() != pa.num_vertices() or self.num_edges() != pa.num_edges():
+        if (
+            self.num_vertices() != pa.num_vertices()
+            or self.num_edges() != pa.num_edges()
+        ):
             # MultiGrepFonctorLargest guarantees that two PatternAutomaton can
-            # only be equal if they are of same size, because PatternAutomaton are
-            # always minimal.
+            # only be equal if they are of same size, because
+            # our PatternAutomaton instances are  always minimal.
             return False
         return deterministic_inclusion(self, pa) == 0
 
@@ -201,4 +211,4 @@ def pattern_automaton_to_path(g: PatternAutomaton, *cls, **kwargs) -> list:
         pmap_vdist,
         **kwargs
     )
-    return make_path(g, s, t, map_vpreds)
+    return make_shortest_path(g, s, t, map_vpreds)

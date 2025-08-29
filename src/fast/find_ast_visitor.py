@@ -33,7 +33,12 @@ class FindAstFromStringsDefaultVisitor:
         pass
 
     # TODO simplify some signature
-    def visit_push_item(self, mutator: Mutator, new_depth: int, new_pq_item: tuple):
+    def visit_push_item(
+        self,
+        mutator: Mutator,
+        new_depth: int,
+        new_pq_item: tuple
+    ):
         """
         Triggered when building a new mutant.
 
@@ -95,7 +100,12 @@ class FindAstFromStringsAggregateVisitor(FindAstFromStringsDefaultVisitor):
         for visitor in self.visitors:
             visitor.visit_pop_item(pq_item)
 
-    def visit_push_item(self, mutator: Mutator, new_depth: int, new_pq_item: tuple):
+    def visit_push_item(
+        self,
+        mutator: Mutator,
+        new_depth: int,
+        new_pq_item: tuple
+    ):
         """
         Triggered when building a new mutant.
 
@@ -240,7 +250,12 @@ class FindAstFromStringsEvaluateVisitor(FindAstFromStringsDefaultVisitor):
         """
         self.num_pops += 1
 
-    def visit_push_item(self, mutator: Mutator, new_depth: int, new_pq_item: tuple):
+    def visit_push_item(
+        self,
+        mutator: Mutator,
+        new_depth: int,
+        new_pq_item: tuple
+    ):
         """
         Triggered when building a new mutant.
 

@@ -21,11 +21,13 @@ def reject_sampling(
 
     Args:
         sample (callable): A `Callback() -> Result` callback which
-            draws a random sample. If it returns `None`, the sample is rejected.
+            draws a random sample. If it returns `None`, the sample
+            is rejected.
         repeat (bool): Pass `True` to rerun sampling in case of reject.
-        max_sampling (int): Maximum number of sampling. Pass `None` to continue
-            sampling until finding a non-rejected value. Note that if
-            `sample` always returns `None`, this results to an infinite loop.
+        max_sampling (int): Maximum number of sampling. Pass `None`
+            to continue sampling until finding a non-rejected value.
+            Note that if `sample` always returns `None`, this results
+            to an infinite loop.
 
     Returns:
         The sampled instances, ``None`` otherwise.
@@ -52,17 +54,18 @@ def random_word_from_automaton(
     max_sampling: int = 1000
 ) -> str:
     """
-    Perform a uniform random walk over an `Automaton` to generate a word accepted
-    by this `Automaton`.
+    Perform a uniform random walk over an `Automaton` to generate
+    a word accepted by this `Automaton`.
 
     Args:
         g (Automaton): A DFA.
         p (float): A value in [0, 1] corresponding to the probability to
             stop once a final state is reached
         repeat (bool): Pass ``True`` to try again while the sample is rejected.
-        max_sampling (int): Max number of reject samplings. If you pass ``None``,
-            the algorithm continues until finding a sample, but depending on
-            `p` and `g`, this may result to an infinite loop.
+        max_sampling (int): Max number of reject samplings.
+            If you pass ``None``, the algorithm continues until finding a
+            sample, but depending on `p` and `g`, this may result to an
+            infinite loop.
 
     Returns:
         A string representing the word discovered during the walk, or
@@ -114,7 +117,8 @@ def random_word_from_automaton(
 #     Args:
 #         dfas: A `list` of `Automaton` instances.
 #         num_words: An `int` to the number of drawn sub-words.
-#         max_length: The maximum word length allowed once words are concatenated.
+#         max_length: The maximum word length allowed once words
+#             are concatenated.
 #         distribution_dfa: A list mapping each `Automaton` of `dfas` with its
 #             probability. `distribution_dfa` must sum to `1.0`. Pass `None`
 #             for uniform distribution.
@@ -152,18 +156,17 @@ def random_ast(
     Returns a random AST and its root node.
 
     Args:
-        re_len(int): The number of nodes of the AST of the output regular expression.
-
-        alphabet(list): A ``list`` gathering the character of the alphabet of the regular
-            expressions. Default to ``list('a...z')``.
-
-        map_operators(dict): A ``dict{str: pybgl.shunting_yard_postfix.Op}`` mapping
-            each meta-character with its corresponding attributes. Defaults to
-            ``pybgl.shunting_yard_postfix.MAP_OPERATORS_RE``.
+        re_len(int): The number of nodes of the AST of the output regular
+            expression.
+        alphabet(list): A ``list`` gathering the character of the alphabet
+            of the regular expressions. Default to ``list('a...z')``.
+        map_operators(dict): A ``dict{str: pybgl.shunting_yard_postfix.Op}``
+            mapping each meta-character with its corresponding attributes.
+            Defaults to ``pybgl.shunting_yard_postfix.MAP_OPERATORS_RE``.
 
     Returns:
-        A ``tuple(pybgl.shunting_yard_postfix.Ast, int)`` gathering the output AST
-        and its root node.
+        A ``tuple(pybgl.shunting_yard_postfix.Ast, int)`` gathering the
+        output AST and its root node.
     """
     def random_ast_rec(re_len: int) -> tuple:
         if re_len == 1:
@@ -177,7 +180,10 @@ def random_ast(
             ast.add_edge(root, child)
         else:
             card = choice([1, 2])
-            operator = choice(binary_operators) if card == 2 else choice(unary_operators)
+            operator = (
+                choice(binary_operators) if card == 2
+                else choice(unary_operators)
+            )
             root = ast.add_vertex(operator)
             if card == 2:
                 re_len_left = randrange(1, re_len - 1)

@@ -7,15 +7,15 @@ import heapq as hq
 class CBFS:
     """
     Implements the `CBFS algorithm
-    <https://www.researchgate.net/publication/315650019_Cyclic_best_first_search_Using_contours_to_guide_branch-and-bound_algorithms_Cyclic_Best_First_Search>`.
+    <https://www.researchgate.net/publication/315650019_Cyclic_best_first_search_Using_contours_to_guide_branch-and-bound_algorithms_Cyclic_Best_First_Search>`__.
     """
     def __init__(self, num_queues: int, pop_idx: int = 0):
         """
         Constructor.
 
         Args:
-            num_queues (int): A strictly positive ``int`` specifying the number of
-                queues managed by this :py:class:`CBFS` instance.
+            num_queues (int): A strictly positive ``int`` specifying the
+                number of queues managed by this :py:class:`CBFS` instance.
             pop_idx (int): The index of the active queue.
                 It must verify ``0 <= pop_idx < self.num_queues``.
         """
@@ -24,11 +24,17 @@ class CBFS:
         ]
         for q in self.queues:
             hq.heapify(q)
-        self.num_queues = num_queues  # The number of queues managed by this CBFS instance.
-        self.pop_idx = pop_idx        # The active the CBFS queue.
-        self.num_popped = 0           # The number of popped item from the active CBFS queue in the current cycle.
-        self.num_to_pop = 1           # The number of items to pop from a queue for each cycle.
-        self.num_items = 0            # The number of items stored in the CBFS queues.
+        self.num_queues = num_queues
+        # The number of queues managed by this CBFS instance.
+        self.pop_idx = pop_idx
+        # The active the CBFS queue.
+        self.num_popped = 0
+        # The number of popped item from the active CBFS queue
+        # in the current cycle.
+        self.num_to_pop = 1
+        # The number of items to pop from a queue for each cycle.
+        self.num_items = 0
+        # The number of items stored in the CBFS queues.
 
     def pop(self) -> object:
         """
@@ -65,6 +71,11 @@ class CBFS:
 
     def is_empty(self) -> bool:
         """
-        Checks whether this :py:class:`CBFS` instance contains at least one item.
+        Checks whether this :py:class:`CBFS` instance contains
+        at least one item.
+
+        Returns:
+            ``True`` if this :py:class:`CBFS` as no item,
+            ``False`` otherwise.
         """
         return self.num_items <= 0  # TODO == 0

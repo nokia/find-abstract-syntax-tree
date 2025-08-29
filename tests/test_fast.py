@@ -2,6 +2,7 @@
 
 from fast import fast
 
+
 def test_fast():
     samples = ["abc", "abcabc", "abcabcabc"]
     results = fast(samples)

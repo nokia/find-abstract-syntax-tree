@@ -9,21 +9,25 @@ from .regexp_ast import RegexpAst
 def dfa_density(dfa: Automaton, length: int, char_proba: float):
     """
     Computes the ratio of the number of words of length ``length``
-    accepted by an automaton ``dfa``, over the number of words of length ``length``.
-    This corresponds to the density of ``a`` if we restrict to the words of length ``length``.
+    accepted by an automaton ``dfa``, over the number of words of
+    length ``length``.
+    This corresponds to the density of ``a`` if we restrict to the
+    words of length ``length``.
 
     Args:
         dfa (Automaton): A :py:class:`pybgl.Automaton` instance.
-        length (int): The considered length. Must be a positive integer.
-        char_proba (float): The probability to pick a given character in the alphabet.
+        length (int): The considered length. Must be a positive
+            integer.
+        char_proba (float): The probability to pick a given character
+            in the alphabet.
             Should probably be set to ``1 / len(dfa.alphabet())`` ?
 
     Returns:
         The density of ``a`` if we restrict to the words of length ``length``.
     """
     # TODO: this is a kind of pagerank assuming that DFA is acyclic, but the
-    # results depends on the order the vertices are visited. So the implementation
-    # below is inaccurate.
+    # results depends on the order the vertices are visited.
+    # So the implementation  below is inaccurate.
     # TODO: remove char_proba parameter.
     map_q_proba = {
         q: 1 if dfa.is_initial(q) else 0
@@ -48,15 +52,18 @@ def ast_density(
     map_pa_infix_re: dict = None
 ) -> float:
     """
-    Compute the density related to a given regular expression abstract syntax tree.
+    Compute the density related to a given regular expression
+    abstract syntax tree.
 
     Args:
         ast (RegexpAst): A :py:class:`RegexpAst` instance.
         map_len_proba (dict):
-        char_proba (float): The probability to pick a given character in the alphabet.
+        char_proba (float): The probability to pick a given character
+            in the alphabet.
             Should probably be set to ``1 / len(dfa.alphabet())`` ?
         map_pa_infix_re (dict): A ``dict{PatternAutomaton : str}`` that maps
-            each :py:class:`PatternAutomaton` to its corresponding regular expression.
+            each :py:class:`PatternAutomaton` to its corresponding
+            regular expression.
 
     Returns:
         The density of ``ast``.

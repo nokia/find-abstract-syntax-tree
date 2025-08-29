@@ -17,8 +17,8 @@ def multi_grep(
         w (str): A ``str`` containing the word to process.
         map_name_dfa (dict): A ``dict{Name:  Automaton}`` mapping each pattern
             name with its corresponding DFA.
-        callback (callable): A ``callable(Name, int, int, str)`` called whenever
-            ``w[j:k]`` is matched by pattern ``name``.
+        callback (callable): A ``callable(Name, int, int, str)``
+            called whenever ``w[j:k]`` is matched by pattern ``name``.
     """
     def make_map_name_q_js_next():
         return {
@@ -69,16 +69,16 @@ def multi_grep_with_delimiters(
         w (str): A ``str`` containing the word to process.
         map_name_dfa (dict): A ``dict{Name:  Automaton}`` mapping each pattern
             name with its corresponding DFA.
-        callback (callable): A ``callable(Name, int, int, str)`` called whenever
-            ``w[j:k]`` is matched by pattern ``name``.
-        is_pattern_separator (callable): A ``callable(Name) -> bool`` return ``True`` if
-            the pattern ``name`` is a separator.
-        is_pattern_left_separated (callable):  A ``callable(Name) -> bool`` return ``True`` if
-            the pattern ``name`` must be preceeded by a separator pattern or
-            located at the beginning of ``w``.
-        is_pattern_right_separated (callable): A ̀``callable(Name) -> bool`` return ``True`` if
-            the pattern ``name`` must be followed by a separator pattern or
-            located at the end of ``w``.
+        callback (callable): A ``callable(Name, int, int, str)``
+            called whenever ``w[j:k]`` is matched by pattern ``name``.
+        is_pattern_separator (callable): A ``callable(Name) -> bool``
+            returning ``True`` iff the ``name`` pattern is a separator.
+        is_pattern_left_separated (callable):  A ``callable(Name) -> bool``
+            returning ``True`` iff the pattern ``name`` must be preceeded
+            by a separator pattern or located at the beginning of ``w``.
+        is_pattern_right_separated (callable): A ̀``callable(Name) -> bool``
+            returning ``True`` iff the ``name`` pattern must be followed
+            by a separator pattern or located at the end of ``w``.
     """
     # multi_grep on separating patterns
     map_name_dfa_separator = {
@@ -121,14 +121,16 @@ def multi_grep_with_delimiters(
 
 class MultiGrepFonctor:
     """
-    Base class used to customize the behavior of the :py:func:`multi_grep` function.
+    Base class used to customize the behavior of the
+    :py:func:`multi_grep` function.
     """
 
     def __call__(self, i, j, k, w):
         """
         Args:
             i (int): The DFA index.
-            j (int): The index of the beginning of a substring catched by the DFA.
+            j (int): The index of the beginning of a substring catched
+                by the DFA.
             k (int): The index of o the end of a substring catched by the DFA.
             w (str): The input string.
         """
