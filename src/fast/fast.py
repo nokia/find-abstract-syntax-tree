@@ -22,7 +22,8 @@ from .regexp_mutators import MUTATORS
 
 def shortness_factor(examples: iter) -> float:
     """
-    Computes the normalization factor used to ensure the shortness is always in [0, 1].
+    Computes the normalization factor used to ensure the shortness
+    is always in [0, 1].
 
     Args:
         examples (set): The set of positive samples
@@ -32,18 +33,25 @@ def shortness_factor(examples: iter) -> float:
 
     Notes:
 
-    - The default behavior of find_ast is to choose n = 1.
-      However, using n = 1 makes the shortness equal to the size of the inferred AST.
-      As a sequel, the shortness is too prepondarant w.r.t. to the accuracy which is in [0.0, 1.0]
+    - The default behavior of find_ast is to choose :math:`n = 1`.
+      However, using n = 1 makes the shortness equal to the size of
+      the inferred AST. As a sequel, the shortness is too prepondarant,
+      w.r.t. to the accuracy which is in :math:`[0.0, 1.0]`
       and fAST waste a lot of energy to explore irrelevant ASTs.
       That is why we must normalize the shortness.
-    - To do so, we should use n = sum(len(example) for example in examples).
-      However, this scaling factor is too aggressive if len(examples) increases.
-    - To circumvent the problem, we use n = max(len(example) for example in examples).
-      Intuitively, this guarantees that 0 <= shortness(PTA(longest_example)) <= 1 which means
-      that the ASTs we are searching have most of time a scaled shortness below 1.
-      This scaling factor makes the shortness insensitive to the number of examples (only
-      to the length of the longest example) and comparable with the accuracy.
+    - To do so, we should use
+      :math:`n = \\sum_{s \\in S^+}(|s|)` where :math:`S^+` is the
+      set of positive examples.
+      However, this scaling factor is too aggressive if :math:`|S^+|`
+      increases.
+    - To circumvent the problem, we use
+      :math:`n = max_{s \\in S^+}(|s|)`
+      Intuitively, this guarantees that
+      :math:`0 <= {shortness}(PTA(\\argmax_{s \\in S^+}(|s|))) <= 1`,
+      which means that the ASTs we are searching have most of time a
+      scaled shortness below 1. This scaling factor makes the shortness
+      insensitive to the number of examples (only to the length
+      of the longest example) and comparable with the accuracy.
     """
     n = max(len(example) for example in examples)
     return 1 / (2 * n)
@@ -60,17 +68,23 @@ def fast_from_strings(
     Regular expression inference algorithm.
 
     Args:
-        examples (list): The list of input :py:class:`PatternAutomaton` instances corresponding
-            to each positive examples.
-        objective_function (callable): The objective function to be minimized.
+        examples (list): The list of input :py:class:`PatternAutomaton`
+            instances corresponding to each positive examples.
+        objective_function (callable): The objective function to be
+            minimized.
         stop_condition (callable): A
-            ``callable(candidate_solutions, elapsed_time) -> bool`` function where:
+            ``callable(candidate_solutions, elapsed_time) -> bool`` function
+            where:
 
-            - candidate_solutions (list): The list of current candidates solutions.
-            - time_elapsed (float): The current execution time, in seconds.
-            - the returned value is ``True`` iff the execution must be stopped.
+            - candidate_solutions (list): The list of the current
+              candidates solutions.
+            - time_elapsed (float): The current execution time,
+              in seconds.
+            - the returned value is ``True`` iff the execution must
+              be stopped.
 
-        mutators (list): The list of `Mutator` instances used to update the ASTs.
+        mutators (list): The list of `Mutator` instances used to update
+            the ASTs.
 
     Returns:
         A list of final solutions, once the queue is empty (dream on),
@@ -142,11 +156,23 @@ def fast_from_strings(
         for depth in range(total_depth)
     }
 
-    def was_already_pushed(ast: RegexpAst, active_leaf: int, push_idx: int) -> bool:
+    def was_already_pushed(
+        ast: RegexpAst,
+        active_leaf: int,
+        push_idx: int
+    ) -> bool:
         """
         Checks whether an AST has already been seen. To check this the AST
         is converted to a string identifier and this key is stored in
         `pushed_regexps`.
+
+        Args:
+            ast (RegexpAst): The considered AST.
+            active_leaf (int): The active leaf of ``ast``.
+            push_idx (int): The depth.
+
+        Returns:
+            ``True`` if this AST has already been pushed.
         """
         # print(ast.to_prefix_regexp_list())
         # ipynb_display_graph(ast)
@@ -198,7 +224,10 @@ def fast_from_strings(
     active_leaf = initial_ast.root
     obj_func_value = 0          # any value would do, will never be compared
 
-    initial_pq_item = (obj_func_value, ast_counter, initial_ast, active_leaf, i, k)
+    initial_pq_item = (
+        obj_func_value, ast_counter, initial_ast,
+        active_leaf, i, k
+    )
     cbfs_q.push(initial_pq_item, indices_to_depth(i, k))
     ast_counter += 1
 
@@ -270,7 +299,11 @@ def fast_from_strings(
                         sigma,
                         u,
                         v,
-                        example.w[:k+1] if isinstance(example, PatternAutomaton) else w[:k],
+                        (
+                            example.w[:k+1] if isinstance(
+                                example, PatternAutomaton
+                            ) else w[:k]
+                        ),
                         examples[:i],
                         epsilon_reachable_arcs,
                         example
@@ -278,7 +311,9 @@ def fast_from_strings(
                     num_mutants += len(mutated_asts)
                     for (new_ast, new_active_leaf) in mutated_asts:
                         new_ast.simplify()
-                        if was_already_pushed(new_ast, new_active_leaf, new_depth):
+                        if was_already_pushed(
+                            new_ast, new_active_leaf, new_depth
+                        ):
                             continue
                         new_obj_func_value = compute_objective_value(
                             new_ast, examples
@@ -287,11 +322,13 @@ def fast_from_strings(
                             new_obj_func_value, ast_counter, new_ast,
                             new_active_leaf, i, k
                         )
-                        # print("    pushing %s" % new_ast.to_prefix_regexp_str())
+                        # print(f"   pushing {new_ast.to_prefix_regexp_str()}")
                         cbfs_q.push(new_pq_item, new_depth)
-                        visitor.visit_push_item(mutator, new_depth, new_pq_item)
+                        visitor.visit_push_item(
+                            mutator, new_depth, new_pq_item
+                        )
                         ast_counter += 1
-        print("     generated %s mutants" % num_mutants)
+        print(f"     generated {num_mutants} mutants")
 
     return final_results
 
@@ -299,19 +336,26 @@ def fast_from_strings(
 def fast(
     examples: list,
     obj_id: int = OBJ_ADD,
-    stop_condition: callable = lambda final_results, time_elapsed: len(final_results) == 1,
+    stop_condition: callable = (
+        lambda final_results, time_elapsed: len(final_results) == 1
+    ),
     mutators: list = MUTATORS,
     *cls, **kwargs
 ) -> list:
     """
-    Runs fAST algorithm to infer regular expression from a set of positive examples.
+    Runs fAST algorithm to infer regular expression from a set of
+    positive examples.
 
     Args:
-        examples(list): A ``set(str)`` gathering the positive examples.
-        obj_id(int): A value among ``{OBJ_ADD, OBJ_MULT, OBJ_TUPLE}``.
-        stop(callable): Stopping ``callable(final_results: list, time_elapsed: float) -> bool`` callback.
-        mutators(list): Defaults to ``MUTATORS``.
-        cls, kwargs: see ``objective_func.make_*_objective_funcfor_str`` functions.
+        examples (list): A ``set(str)`` gathering the positive examples.
+        obj_id (int): A value among ``{OBJ_ADD, OBJ_MULT, OBJ_TUPLE}``.
+        stop (callable): Stopping
+            ``callable(final_results: list, time_elapsed: float) -> bool``
+            callback.
+        mutators (list): Defaults to ``MUTATORS``.
+        cls, kwargs: See the
+            :py:func:`objective_func.make_*_objective_funcfor_str`
+            function.
 
     Returns:
         The found regular expressions.
@@ -351,24 +395,27 @@ def fast_from_re(
     *cls, **kwargs
 ) -> list:
     """
-    Runs fAST algorithm to infer regular expression from a set of positive examples.
+    Runs fAST algorithm to infer regular expression from a set of
+    positive examples.
 
     Args:
         regexp(str): A regular expression.
         num_examples(int): Number of positive examples.
-        p_stop_final (float): A ``float`` between ``0.0`` and ``1.0`` corresponding the
-            probability to stop when reaching a final state of the automaton induced by ``regexp``.
+        p_stop_final (float): A ``float`` between ``0.0`` and ``1.0``
+            corresponding the probability to stop when reaching a final
+            state of the automaton induced by ``regexp``.
             The higher ``p_stop_final``, the longer the examples.
         repeat(bool): Pass `True` to rerun sampling in case of reject.
-        max_sampling (int): Maximum number of sampling. Pass ``None`` to continue
-            sampling until finding a non-rejected value. Note that if
-            `sample` always returns ``None``, this results to an infinite loop.
-        cls, kwargs: see the py:func:`fast` function .
+        max_sampling (int): Maximum number of sampling. Pass ``None``
+            to continue sampling until finding a non-rejected value.
+            Note that if `sample` always returns ``None``, this results
+            to an infinite loop.
+        cls, kwargs: see the :py:func:`fast` function .
 
     Returns:
         The found regular expressions.
     """
-    from pybgl.regexp import compile_dfa
+    from pybgl import compile_dfa
     from .random import random_word_from_automaton
 
     g = compile_dfa(regexp)
@@ -396,8 +443,9 @@ def fast_benchmark(
     **kwargs
 ) -> float:
     """
-    Tests fAST on a custom benchmark by crafting a set of test regular expression.
-    The goal is to test whether fAST finds the original (or a better) regular
+    Tests fAST on a custom benchmark by crafting a set of
+    test regular expressions. The goal is to test whether
+    fAST finds the original (or a better) regular
     expression.
 
     Args:
@@ -408,7 +456,7 @@ def fast_benchmark(
             for this evaluation.
         cls, kwargs: See the :py:func:`fast` function.
     """
-    from pybgl.regexp import compile_dfa
+    from pybgl import compile_dfa
     from pprint import pformat
     from .random import random_ast, random_word_from_automaton
 
@@ -442,13 +490,19 @@ def fast_benchmark(
             examples = set()
             i = 0
             while len(examples) < num_examples:
-                w = random_word_from_automaton(g, p=0.5, repeat=True, max_sampling=1000)
+                w = random_word_from_automaton(
+                    g, p=0.5, repeat=True, max_sampling=1000
+                )
                 if w:
-                    # TODO: fix fast_from_strings to that is support the "" example.
+                    # TODO: fix fast_from_strings to that is support
+                    # the "" example.
                     examples.add(w)
                 i += 1
                 if i == 100:
-                    print(f"The target language seems very small, stopping with {len(examples)} instead of {num_examples}")
+                    print(
+                        "The target language seems very small, stopping with "
+                        f"{len(examples)} instead of {num_examples}"
+                    )
                     break
             print(f"examples = {pformat(examples)}")
 
@@ -456,7 +510,11 @@ def fast_benchmark(
             solutions = sorted(
                 fast(
                     list(examples),
-                    stop_condition=lambda final_results, time_elapsed: len(final_results) == 1 or time_elapsed > 10,
+                    stop_condition=(
+                        lambda final_results, time_elapsed: (
+                            len(final_results) == 1 or time_elapsed > 10
+                        )
+                    ),
                     *cls, **kwargs
                 ),
                 key=lambda solution: solution[0],
@@ -467,7 +525,10 @@ def fast_benchmark(
                 for (score, ast) in solutions
             ]
             print(f"output regexps = {pformat(regexps)}")
-            if any(is_valid(compile_dfa(regexp), examples) for regexp in regexps):
+            if any(
+                is_valid(compile_dfa(regexp), examples)
+                for regexp in regexps
+            ):
                 print("SUCCESS")
                 num_successes += 1
             else:
