@@ -1,8 +1,7 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 
-from pybgl.automaton import Automaton, vertices
-from pybgl.regexp import compile_dfa
+from pybgl import Automaton, compile_dfa
 # from .brzozowski_minimization import brzozowski_minimization
 from .regexp_ast import RegexpAst
 
@@ -28,17 +27,17 @@ def dfa_density(dfa: Automaton, length: int, char_proba: float):
     # TODO: remove char_proba parameter.
     map_q_proba = {
         q: 1 if dfa.is_initial(q) else 0
-        for q in vertices(dfa)
+        for q in dfa.vertices()
     }
     for _ in range(length):
-        new_map_q_proba = {q: 0 for q in vertices(dfa)}
-        for (q, adj_q) in dfa.m_adjacencies.items():
+        new_map_q_proba = {q: 0 for q in dfa.vertices()}
+        for (q, adj_q) in dfa.adjacencies.items():
             for (a, r) in adj_q.items():
                 new_map_q_proba[r] += char_proba * map_q_proba[q]
         map_q_proba = new_map_q_proba
     return sum(
         map_q_proba[q] if dfa.is_final(q) else 0
-        for q in vertices(dfa)
+        for q in dfa.vertices()
     )
 
 

@@ -3,10 +3,13 @@
 
 from collections import deque
 from copy import deepcopy
-from pybgl.graph import EdgeDescriptor, to_dot
-from pybgl.graphviz import enrich_kwargs
-from pybgl.property_map import make_func_property_map
-from pybgl.ipynb import ipynb_display_graph
+from pybgl import (
+    EdgeDescriptor,
+    enrich_kwargs,
+    make_func_property_map,
+    ipynb_display_graph,
+    to_dot,
+)
 from .pattern_automaton import PatternAutomaton
 
 
@@ -889,7 +892,7 @@ class RegexpAst:
         Returns:
             The vertex descriptor of the source of ``e``.
         """
-        return e.m_source
+        return e.source
 
     def target(self, e: EdgeDescriptor) -> int:
         """
@@ -901,7 +904,7 @@ class RegexpAst:
         Returns:
             The vertex descriptor of the target of ``e``.
         """
-        return e.m_target
+        return e.target
 
     def to_dot(self, **kwargs) -> str:
         """

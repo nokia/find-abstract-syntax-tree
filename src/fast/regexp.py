@@ -4,8 +4,10 @@
 """Functions used to craft automata from regular expressions."""
 
 from string import printable
-from pybgl.automaton import Automaton
-from pybgl.regexp import compile_dfa
+from pybgl import (
+    Automaton,
+    compile_dfa,
+)
 
 
 def make_re_hex_digit(lower_case: bool = True, upper_case: bool = True) -> str:

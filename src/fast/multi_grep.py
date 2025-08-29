@@ -2,7 +2,7 @@
 # -*- coding: utf-8 -*-
 
 from collections import defaultdict
-from pybgl.automaton import BOTTOM
+from pybgl import BOTTOM
 
 
 def multi_grep(

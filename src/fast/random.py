@@ -3,8 +3,12 @@
 
 from functools import partial
 from random import choice, randrange, random
-from pybgl.automaton import Automaton, EdgeDescriptor
-from pybgl.shunting_yard_postfix import Ast, MAP_OPERATORS_RE
+from pybgl import (
+    MAP_OPERATORS_RE,
+    Ast,
+    Automaton,
+    EdgeDescriptor,
+)
 
 
 def reject_sampling(

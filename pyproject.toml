@@ -22,7 +22,7 @@ testpaths = [
 
 [tool.poetry.dependencies]
 python = ">=3.8, <4.0"
-pybgl = ">=0.10"
+pybgl = ">=0.11.2"
 
 [tool.poetry.group.test]
 optional = true

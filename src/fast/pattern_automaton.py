@@ -3,11 +3,14 @@
 
 from collections import defaultdict
 from functools import partial
-from pybgl.automaton import Automaton, EdgeDescriptor
-from pybgl.deterministic_inclusion import deterministic_inclusion
-from pybgl.dijkstra_shortest_paths import dijkstra_shortest_path, make_path
-from pybgl.property_map import (
-    make_assoc_property_map, make_func_property_map
+from pybgl import (
+    Automaton,
+    EdgeDescriptor,
+    deterministic_inclusion,
+    dijkstra_shortest_path,
+    make_assoc_property_map,
+    make_func_property_map,
+    make_shortest_path,
 )
 from .multi_grep import MultiGrepFonctorLargest, multi_grep
 

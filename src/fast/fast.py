@@ -2,7 +2,7 @@
 # -*- coding: utf-8 -*-
 
 from time import time
-from pybgl.ipynb import ipynb_display_graph
+from pybgl import ipynb_display_graph
 
 from .cbfs import CBFS
 from .find_ast_visitor import FindAstFromStringsDefaultVisitor
