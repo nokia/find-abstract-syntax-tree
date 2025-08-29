@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "find-abstract-syntax-tree"
-version = '0.2.0'
+version = '0.2.1'
 description = "Python3 module inferring Abstract Syntax Trees (AST) representing regular expressions (RE) given a set of positive examples."
 authors = [
     "Maxime Raynal <maxime.raynal@nokia.com>",
