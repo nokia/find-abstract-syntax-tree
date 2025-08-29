@@ -16,6 +16,9 @@ _
 * Tests:
   * Added `test_fast.py`
 
-## 0.2.0 (2025-08-29)
+## 0.2.1 (2025-08-29)
 
 * Migrated code to conform to the last version of `pybgl`.
+* CI:
+  * Processed most of `flake8` warnings
+* Improved documentation
